@@ -44,19 +44,10 @@ export class ProfileService {
   }
 
  async findOne(id: number) {
-    /*return the profile for a user 
-    username 
-    address 
-    bio 
-    twitter
-    discord
-    telegram
-    */
     return await this.prisma.user.findUnique({ where: { id: id } });
   }
 
  async update(id: number, updateProfileDto: UpdateProfileDto) {
-    //update the fields returned
     return await prisma.user.update( { where: { id },
       data: { ...updateProfileDto },});
     return `This action updates a #${id} profile`;
@@ -84,26 +75,6 @@ export class ProfileService {
     if (Verifyaddress !== currentUser?.address) {
       throw new UnauthorizedException('Signature verification failed');
     } 
-    // else {
-
-
-      // let crateNewUser :any;
-      // if (!currentUser){
-      //          const payload: any = {
-      //            address: Verifyaddress,
-      //            nonce: nonce.toString(),
-      //          };
-      // crateNewUser = await this.prisma.user.create({
-      //   data: payload,
-      // });
-      //   const tokenPayload = crateNewUser.address;
-      //               const token = this.jwtService.sign(tokenPayload, {
-      //                 secret: process.env.JWT_SECRET,
-      //               });
-      //               console.log('token create', token);
-      //           return token;
-
-      // }
       const payload = { address: Verifyaddress,
         role : Role.Admin };
       const token = this.jwtService.sign(payload, {
@@ -111,41 +82,7 @@ export class ProfileService {
       });
       console.log('token verify', token);
       return token;
-    // }
   };
-
-  // createSigVerify = async (createLoginDto: CreateLoginDto) => {
-  // //   const { signature, address, nonce }: any = createLoginDto;
-
-  // //    const msg = `I am signing my one-time nonce: ${nonce}`;
-
-  // //    const msgBufferHex = bufferToHex(Buffer.from(msg, 'utf8'));
-  // //    const Verifyaddress = recoverPersonalSignature({
-  // //      data: msgBufferHex,
-  // //      sig: signature,
-  // //    });
-
-  // //    if (Verifyaddress !== address) {
-  // //      throw new UnauthorizedException('Signature verification failed');
-  // //    } else {
-  // //          const payload: any = {
-  // //            address: Verifyaddress,
-  // //            nonce: nonce,
-  // //          };
-  // //          console.log('a,', payload);
-  // //          const crateNewUser = await this.prisma.user.create({
-  // //            data: payload,
-  // //          });
-  // //          console.log('crateNewUser', crateNewUser);
-  // //      const token = this.jwtService.sign(Verifyaddress, {
-  // //        secret: process.env.JWT_SECRET,
-  // //        expiresIn: '1d',
-  // //      });
-  // //      console.log('token', token);
-  // //      return token;
-  // //    }
-  // };
-
   async  login(createLoginDto: CreateLoginDto) {
     const { address, nonce }: any = createLoginDto;
     const currentUser = await this.prisma.user.findFirst({

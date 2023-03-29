@@ -47,8 +47,6 @@ export class CreateTagsDiscussionsService {
    })
    readonly canvasHash?: string
 
-  //  @ApiProperty()
-  //    upvotes?: string;}
 
 }
 export class CreateLoginDto {

@@ -20,20 +20,10 @@ export class CreateAdminDto {
   })
   readonly authorId: Number;
 
-  //   @ApiProperty()
-  // readonly author: string;
+
 
   @ApiProperty()
   readonly threadId: number;
-
-  //  @ApiProperty()
-  // readonly thread: string;
-
-  // @ApiProperty()
-  // readonly upvotes?: number;
-
-  // @ApiProperty()
-  // readonly replies?: number;
 
   @ApiProperty({
     required: false,

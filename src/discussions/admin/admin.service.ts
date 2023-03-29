@@ -17,11 +17,7 @@ export class AdminService {
       content: createAdminDto.content,
       createdAt: createAdminDto.createdAt,
       authorId: createAdminDto.authorId,
-      // author:  createAdminDto.author,
       threadId: createAdminDto.threadId,
-      // thread: createAdminDto.thread,
-      // upvotes: createAdminDto.upvotes,
-      // replies: createAdminDto.replies,
       canvasAction: createAdminDto.canvasAction,
       canvasSession: createAdminDto.canvasSession,
       canvasHash: createAdminDto.canvasHash

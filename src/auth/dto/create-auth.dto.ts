@@ -21,21 +21,9 @@ export class CreateAuthDto {
     })
     readonly authorId: Number
     
-  //   @ApiProperty()
-  // readonly author: string;
 
    @ApiProperty()
   readonly commentId: number;
-
-
-  //  @ApiProperty()
-  // readonly comment: string;
-
-  // @ApiProperty()
-  // readonly upvotes?: number;
-
-  // @ApiProperty()
-  // readonly replies?: number;
 
     @ApiProperty({
         required: false,
@@ -56,9 +44,6 @@ export class CreateAuthDto {
     // description: "thread tags chosen from the available tags"
    })
    readonly canvasHash?: string
-
-  //  @ApiProperty()
-  //    upvotes?: string;}
 
 }
 export class CreateLoginDto {
