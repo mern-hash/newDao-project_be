@@ -8,33 +8,33 @@ import { Public } from 'src/auth/decorators/public.decorators';
 export class SnapshotController {
   constructor(private readonly snapshotService: SnapshotService) {}
 
-  @Post()
-  create(@Body() createSnapshotDto: CreateSnapshotDto) {
-    return this.snapshotService.create(createSnapshotDto);
-  }
-  @Public()
-  @Get()
-  findAll() {
-    return this.snapshotService.findAll();
-  }
+  // @Post()
+  // create(@Body() createSnapshotDto: CreateSnapshotDto) {
+  //   return this.snapshotService.create(createSnapshotDto);
+  // }
+  // @Public()
+  // @Get()
+  // findAll() {
+  //   return this.snapshotService.findAll();
+  // }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.snapshotService.findOne(+id);
-  }
+  // @Get(':id')
+  // findOne(@Param('id') id: string) {
+  //   return this.snapshotService.findOne(+id);
+  // }
 
-  @Patch(':id')
-  update(
-    @Param('id') id: string,
-    @Body() updateSnapshotDto: UpdateSnapshotDto,
-  ) {
-    return this.snapshotService.update(+id, updateSnapshotDto);
-  }
+  // @Patch(':id')
+  // update(
+  //   @Param('id') id: string,
+  //   @Body() updateSnapshotDto: UpdateSnapshotDto,
+  // ) {
+  //   return this.snapshotService.update(+id, updateSnapshotDto);
+  // }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.snapshotService.remove(+id);
-  }
+  // @Delete(':id')
+  // remove(@Param('id') id: string) {
+  //   return this.snapshotService.remove(+id);
+  // }
 
   @Public()
   @Get('/get/proposal')
@@ -53,6 +53,16 @@ export class SnapshotController {
     return this.snapshotService.getvotes();
   }
 
+  // @Public()
+  // @Post('/proposal')
+  // postProposal() {
+  //   return this.discussionsService.postProposal();
+
+  // } @Public()
+  // @Get('/proposal')
+  // getProposal() {
+  //   return this.discussionsService.getProposal() 
+  // }
   @Public()
   @Post('/post/votes')
   postVote() {

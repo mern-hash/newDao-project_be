@@ -16,17 +16,15 @@ import { Role } from 'src/auth/role-enums/role.enum';
 // var db = require('../../db');
 
 var store = new SessionNonceStore();
-// var router = express.Router();
+// var const prisma = new PrismaClient();
+
+const prisma = new PrismaClient();
 
 @Injectable()
 export class ProfileService {
   constructor(private prisma: PrismaClient, private jwtService: JwtService, ) {}
 
-
   create(createProfileDto: CreateProfileDto) {
-    //called if the user does not exsist in the database
-    // return 'This action adds a new profile';
-    //called if the user does not exsist in the database
     const profile: any = {
       address: createProfileDto.address,
       name: createProfileDto.name,
@@ -57,8 +55,10 @@ export class ProfileService {
     return await this.prisma.user.findUnique({ where: { id: id } });
   }
 
-  update(id: number, updateProfileDto: UpdateProfileDto) {
+ async update(id: number, updateProfileDto: UpdateProfileDto) {
     //update the fields returned
+    return await prisma.user.update( { where: { id },
+      data: { ...updateProfileDto },});
     return `This action updates a #${id} profile`;
   }
 

@@ -1,14 +1,35 @@
 import { Injectable } from '@nestjs/common';
+import { PrismaClient } from '@prisma/client';
+import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateAdminDto } from './dto/create-admin.dto';
 import { CreateTagDto } from './dto/create-tag.dto';
 import { UpdateAdminDto } from './dto/update-admin.dto';
 import { UpdateTagDto } from './dto/update-tag.dto';
 
+const prisma = new PrismaClient();
+
 @Injectable()
 export class AdminService {
-  create(createAdminDto: CreateAdminDto) {
-    return 'This action adds a new admin to a space';
+  constructor(private prisma: PrismaService) {}
+ async create(createAdminDto: CreateAdminDto) {
+    const thread: any = {
+      id: createAdminDto.id,
+      content: createAdminDto.content,
+      createdAt: createAdminDto.createdAt,
+      authorId: createAdminDto.authorId,
+      // author:  createAdminDto.author,
+      threadId: createAdminDto.threadId,
+      // thread: createAdminDto.thread,
+      // upvotes: createAdminDto.upvotes,
+      // replies: createAdminDto.replies,
+      canvasAction: createAdminDto.canvasAction,
+      canvasSession: createAdminDto.canvasSession,
+      canvasHash: createAdminDto.canvasHash
+    };
+  console.log("thread",thread)
+  return this.prisma.comment.create({ data: thread });
   }
+ 
   createTag(CreateTagDto: CreateTagDto){
     return 'This action creates a tag'
   }
@@ -32,15 +53,25 @@ export class AdminService {
     return `This action removes a user from the space`
   }
 
-  findAll() {
+ async findAll() {
+    return await prisma.comment.findMany();
     return `This action returns all moderators of a space`;
   }
 
-  findOne(id: number) {
+ async findOne(id: number) {
+    return await prisma.comment.findUnique({where :{id: id}});
     return `This action returns a #${id} moderator`;
   }
 
-  update(id: number, updateAdminDto: UpdateAdminDto) {
+ async update(id: number, updateAdminDto: UpdateAdminDto) {
+    return await prisma.comment.update( { where: { id },
+      data: {   content: updateAdminDto.content,
+        createdAt: updateAdminDto.createdAt,
+        // authorId: updateAdminDto.authorId,
+        threadId: updateAdminDto.threadId,
+        canvasAction: updateAdminDto.canvasAction,
+        canvasSession: updateAdminDto.canvasSession,
+        canvasHash: updateAdminDto.canvasHash },});
     //only the super user can update a moderator
     return `This action updates a #${id} moderator`;
   }
@@ -55,7 +86,9 @@ export class AdminService {
     return `This action unlocks a threa`
   }
 
-  remove(id: number) {
+ async remove(id: number) {
+    return await prisma.comment.delete({ where: { id } });
+
     //only the super user can remove a moderator
     return `This action removes a #${id} admin`;
   }

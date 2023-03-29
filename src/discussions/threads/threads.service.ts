@@ -22,7 +22,7 @@ export class ThreadsService {
       canvasSession: createThreadDto.canvasSession,
       canvasHash: createThreadDto.canvasHash,
     };
-    // console.log("thread",thread)
+    console.log("thread",thread)
     return this.prisma.thread.create({ data: thread });
   }
   // return 'This action adds a new thread';
@@ -53,8 +53,18 @@ export class ThreadsService {
     return `This action returns a #${id} thread in ${spaceId}`;
   }
 
-  update(id: number, updateThreadDto: UpdateThreadDto) {
-    //thread can only be updated by a moderator this actor will approve the thread for post
+async  update(id: number, updateThreadDto: UpdateThreadDto) {
+   
+    return  await prisma.thread.update({
+      where: { id },
+      data: {title: updateThreadDto.title,
+        content: updateThreadDto.content,
+        viewCount: updateThreadDto.viewCount,
+        createdAt:  updateThreadDto.createdAt,
+        authorId: updateThreadDto.authorId,
+        canvasAction: updateThreadDto.canvasAction,
+        canvasSession: updateThreadDto.canvasSession,
+        canvasHash: updateThreadDto.canvasHash},}); //thread can only be updated by a moderator this actor will approve the thread for post
     return `This action updates a #${id} thread`;
   }
 
