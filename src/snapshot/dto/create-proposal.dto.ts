@@ -1,6 +1,9 @@
 import { ApiProperty } from '@nestjs/swagger';
 
-export class CreateTagsDiscussionsService {
+export class CreateProposalSnapshotService {
+  @ApiProperty()
+  readonly id: Number;
+
   @ApiProperty()
   readonly address: string;
 
@@ -12,10 +15,6 @@ export class CreateTagsDiscussionsService {
 
   @ApiProperty({ required: false })
   readonly role: string;
-
-  @ApiProperty({ required: false })
-  readonly categories: string;
-
 
 
 }

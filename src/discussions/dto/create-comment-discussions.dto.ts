@@ -20,6 +20,11 @@ export class CreateCommentDiscussionsService {
   })
   readonly authorId: Number;
 
+
+
+  @ApiProperty()
+  readonly threadId: number;
+
   @ApiProperty({
     required: false,
     description: 'thread tags chosen from the available tags',

@@ -51,7 +51,8 @@ export class DiscussionsController {
   getComments() {
     return this.discussionsService.getCategories();
   }
-  @Roles(Role.User)
+  @Public()
+  // @Roles(Role.User)
   @Post('/comments')
   postComments(@Body() createCommentDiscussionsService: CreateCommentDiscussionsService) {
     return this.discussionsService.postComments(createCommentDiscussionsService);
@@ -64,7 +65,9 @@ export class DiscussionsController {
   getTags() {
     return this.discussionsService.getTags();
   }
-  @Roles(Role.Admin)
+
+  @Public()
+  // @Roles(Role.Admin)
   @Post('/tags')
   postTags(@Body() createTagsDiscussionsService: CreateTagsDiscussionsService) {
     return this.discussionsService.postTags(createTagsDiscussionsService);
@@ -98,8 +101,9 @@ export class DiscussionsController {
   profilefindOne(@Param('id') id: string) {
     return this.discussionsService.profilefindOne(+id);
   }
-
-  @Roles(Role.User)
+  
+  @Public()
+  // @Roles(Role.User)
   @Post('/view')
   postView(@Body() CreateViewDiscussionsService: CreateViewDiscussionsService) {
     return this.discussionsService.postView(CreateViewDiscussionsService);
@@ -130,14 +134,20 @@ export class DiscussionsController {
     return this.discussionsService.threadsUpdate(+id, createThreadDiscussionsService);
   }
   
-  // @Public()
-  @Roles(Role.User,Role.User)
-  @Delete('/thread')
-  deleteThread() {
-    return this.discussionsService.deleteThread();
+  // @Roles(Role.User,Role.User)
+  // @Delete('/thread')
+  // deleteThread() {
+  //   return this.discussionsService.deleteThread();
+  // }
+  @Public()
+     @Delete('/thread/:id')
+   ThreadsDelete(@Param('id') id: number) {
+    return this.discussionsService.ThreadsDelete(id);
   }
-  
-
+   // @Delete(':id')
+  // remove(@Param('id') id: string) {
+  //   return this.profileService.remove(+id);
+  // }
   @Public()
   // @Roles(Role.User,Role.Admin)
   @Delete('/comments')
@@ -147,16 +157,16 @@ export class DiscussionsController {
 
    @Public()
   // @Roles(Role.User,Role.Admin)
-  @Delete('/tags')
-  deleteTags() {
-    return this.discussionsService.deleteTags();
+  @Delete('/tags/:id')
+  tagsDelete(@Param('id') id: number) {
+    return this.discussionsService.tagsDelete(+id);
   }
 
   @Public()
   // @Roles(Role.User,Role.Admin)
-  @Delete('/categories')
-  deleteCategories() {
-    return this.discussionsService.deleteCategories();
+  @Delete('/categories/:id')
+  deleteCategories(@Param('id') id: number) {
+    return this.discussionsService.deleteCategories(+id);
   }
 
   @Public()

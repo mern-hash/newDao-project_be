@@ -1,7 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateCategoriesDiscussionsService {
- 
+  @ApiProperty()
+  readonly id: Number;
 
   @ApiProperty()
   readonly address: string;
@@ -12,6 +13,8 @@ export class CreateCategoriesDiscussionsService {
   @ApiProperty({ required: false })
   readonly bio: string;
 
+  @ApiProperty({ required: false })
+  readonly telegram: string;
 
   @ApiProperty({ required: false })
   readonly discord: string;

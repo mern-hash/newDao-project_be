@@ -7,13 +7,13 @@ import { CreateCategoriesDiscussionsService } from './dto/create-categories-disc
 import { CreateCommentDiscussionsService } from './dto/create-comment-discussions.dto';
 import { CreateTagsDiscussionsService } from './dto/create-tags-discussions.dto';
 import { CreateViewDiscussionsService } from './dto/create-view-discussions.dto';
+import { id } from 'ethers';
 
 // initialize Prisma Client
 const prisma = new PrismaClient();
 
 @Injectable()
 export class DiscussionsService {
-  // constructor() {}
 
   constructor(private prisma: PrismaClient ) {}
 
@@ -30,40 +30,14 @@ export class DiscussionsService {
     return this.prisma.user.create({ data: profile });
   }
 
-  async profilefindOne(id: number) {
-    return await this.prisma.user.findUnique({ where: { id: id } });
-  }
-
-  getCategories() {
-    return `Returns a list of categories`;
-  }
-
-  async getThreads() {
-    //  `Returns a list of threads`;
-    return await prisma.thread.findMany();
-  }
-
-  async login(){
-    return 
-  }
-
-  getComments() {
-    return `Returns a list of comments`;
-  }
-  getTags() {
-    return `Returns a list of tags`;
-  }
-  getTokenbalance() {
-    return `Returns the token balance of a users`;
-  }
-  getMembers() {
-    return `Returns a list of  members`;
-  }
   async getProfile() {
     return await prisma.user.findMany();
     // return `Returns a list of  members`;
   }
- 
+
+  async profilefindOne(id: number) {
+    return await this.prisma.user.findUnique({ where: { id: id } });
+  }
 
   async profileUpdate(id: number, CreateDiscussionsService: CreateDiscussionsService) {
     //update the fields returned
@@ -71,9 +45,53 @@ export class DiscussionsService {
       data: { ...CreateDiscussionsService },});
     return `This action updates a #${id} profile`;
   }
+
+
+  postCategories(createCategoriesDiscussionsService: CreateCategoriesDiscussionsService) {
+    const profile: any = {
+      address: createCategoriesDiscussionsService.address,
+      name: createCategoriesDiscussionsService.name,
+      bio: createCategoriesDiscussionsService.bio,
+      telegram: createCategoriesDiscussionsService.telegram,
+      discord: createCategoriesDiscussionsService.discord,
+      nonce: createCategoriesDiscussionsService.nonce,
+    };
+    console.log('profile', profile);
+    return this.prisma.categories.create({ data: profile });
+  }
+  
+async  getCategories() {
+    return await prisma.categories.findMany();
+  }
+
+ async deleteCategories(id: number) {
+    return await this.prisma.categories.delete({ where: { id } });
+
+  }
+
+
+  async login(){
+    return 
+  }
+
+ async getComments() {
+    return await prisma.comment.findMany();
+  }
+
+ 
+
+ async getTokenbalance() {
+    return await prisma.thread.findMany();
+
+  }
+ async  getMembers() {
+    return await prisma.thread.findMany();
+
+  }
+ 
   postThreads(createThreadDiscussionsService: CreateThreadDiscussionsService) {
       const thread: any = {
-        // id: createThreadDiscussionsService.id,
+        id: createThreadDiscussionsService.id,
         title: createThreadDiscussionsService.title,
         content: createThreadDiscussionsService.content,
         viewCount: createThreadDiscussionsService.viewCount,
@@ -87,6 +105,9 @@ export class DiscussionsService {
       return this.prisma.thread.create({ data: thread });
   }
 
+  async getThreads() {
+    return await prisma.thread.findMany();
+  }
   async threadsfindOne(id: number) {
     return await this.prisma.thread.findUnique({ where: { id: id } });
   }
@@ -94,23 +115,39 @@ export class DiscussionsService {
   async threadsUpdate(id: number, createThreadDiscussionsService: CreateThreadDiscussionsService) {
     //update the fields returned
     return await prisma.thread.update( { where: { id },
-      data: { ...createThreadDiscussionsService },});
+      data: {title: createThreadDiscussionsService.title,
+        content: createThreadDiscussionsService.content,
+        viewCount: createThreadDiscussionsService.viewCount,
+        createdAt: createThreadDiscussionsService.createdAt,
+        authorId: createThreadDiscussionsService.authorId,
+        canvasAction: createThreadDiscussionsService.canvasAction,
+        canvasSession: createThreadDiscussionsService.canvasSession,
+        canvasHash: createThreadDiscussionsService.canvasHash, },});
     return `This action updates a #${id} profile`;
   }
 
-  postComments(CreateCommentDiscussionsService: CreateCommentDiscussionsService) {
-    const comment: any = {
-      id: CreateCommentDiscussionsService.id,
-      content: CreateCommentDiscussionsService.content,
-      createdAt: CreateCommentDiscussionsService.createdAt,
-      authorId: CreateCommentDiscussionsService.authorId,
-      canvasAction: CreateCommentDiscussionsService.canvasAction,
-      canvasSession: CreateCommentDiscussionsService.canvasSession,
-      canvasHash: CreateCommentDiscussionsService.canvasHash
-    };
-  console.log("comment",comment)
-  return this.prisma.comment.create({ data: comment });
+ async ThreadsDelete(id: number) {
+    return await prisma.thread.delete({ where: { id } });
   }
+
+
+
+
+  postComments(CreateCommentDiscussionsService: CreateCommentDiscussionsService) {
+      const comment: any = {
+        id: CreateCommentDiscussionsService.id,
+        content: CreateCommentDiscussionsService.content,
+        createdAt: CreateCommentDiscussionsService.createdAt,
+        authorId: CreateCommentDiscussionsService.authorId,
+        threadId: CreateCommentDiscussionsService.threadId,
+        canvasAction: CreateCommentDiscussionsService.canvasAction,
+        canvasSession: CreateCommentDiscussionsService.canvasSession,
+        canvasHash: CreateCommentDiscussionsService.canvasHash
+          };
+    console.log("comment",comment)
+    return this.prisma.comment.create({ data: comment });
+}
+
 
   postView(CreateViewDiscussionsService: CreateViewDiscussionsService) {
     const view: any = {
@@ -121,37 +158,30 @@ export class DiscussionsService {
       canvasHash: CreateViewDiscussionsService.canvasHash
     };
   console.log("view",view)
-  // return this.prisma.view.create({ data: view });
+  return this.prisma.view.create({ data: view });
   }
 
   postTags(createTagsDiscussionsService: CreateTagsDiscussionsService) {
-    const tag: any = {
-      id: createTagsDiscussionsService.id,
-      content: createTagsDiscussionsService.content,
-      createdAt: createTagsDiscussionsService.createdAt,
-      authorId: createTagsDiscussionsService.authorId,
-      commentId: createTagsDiscussionsService.commentId,
-      canvasAction: createTagsDiscussionsService.canvasAction,
-      canvasSession: createTagsDiscussionsService.canvasSession,
-      canvasHash: createTagsDiscussionsService.canvasHash,
+    const profile: any = {
+      address: createTagsDiscussionsService.address,
+      name: createTagsDiscussionsService.name,
+      bio: createTagsDiscussionsService.bio,
+      role: createTagsDiscussionsService.role,
+      categories: createTagsDiscussionsService.categories,
     };
-    // return this.prisma.tags.create({ data: tag });
+    console.log("profile",profile)
+    return this.prisma.tag.create({ data: profile });
   }
 
-  postCategories(createCategoriesDiscussionsService: CreateCategoriesDiscussionsService) {
-    const Categories: any = {
-      address: createCategoriesDiscussionsService.address,
-      name: createCategoriesDiscussionsService.name,
-      bio: createCategoriesDiscussionsService.bio,
-      discord: createCategoriesDiscussionsService.discord,
-      nonce: createCategoriesDiscussionsService.nonce,
-    };
-    console.log("Categories",Categories)
-    
-    return this.prisma.categories.create({ data: Categories });
-    return `Create a category `;
+  async getTags() {
+    return await prisma.tag.findMany();
   }
 
+  async tagsDelete(id: number) {
+    return await this.prisma.tag.delete({ where: { id } });
+
+  }
+  
   postProposal() {
     return `Create a category `;
     
@@ -176,9 +206,7 @@ export class DiscussionsService {
     return `Create a category `;
   }
 
-  deleteThread() {
-    return `Create a category `;
-  }
+
 
   deleteComments() {
     return `Create a category `;
@@ -188,10 +216,7 @@ export class DiscussionsService {
     return `Create a category `;
   }
 
-  deleteCategories() {
-    return `Create a category `;
-  }
-
+  
   deleteSuspends() {
     return `Create a category `;
 

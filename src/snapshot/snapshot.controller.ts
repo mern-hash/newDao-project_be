@@ -3,6 +3,9 @@ import { SnapshotService } from './snapshot.service';
 import { CreateSnapshotDto } from './dto/create-snapshot.dto';
 import { UpdateSnapshotDto } from './dto/update-snapshot.dto';
 import { Public } from 'src/auth/decorators/public.decorators';
+import { CreateProposalSnapshotService } from './dto/create-proposal.dto';
+import { CreateVoteSnapshotService } from './dto/create-vote.dto';
+import { CreateDelegateSnapshotService } from './dto/create-delegate.dto';
 
 @Controller('snapshot')
 export class SnapshotController {
@@ -43,8 +46,8 @@ export class SnapshotController {
   }
   @Public()
   @Post('/post/proposal')
-  postProposal() {
-    return this.snapshotService.postProposal();
+  postProposal(@Body() CreateProposalSnapshotService: CreateProposalSnapshotService)  {
+    return this.snapshotService.postProposal(CreateProposalSnapshotService);
   }
 
   @Public()
@@ -65,12 +68,12 @@ export class SnapshotController {
   // }
   @Public()
   @Post('/post/votes')
-  postVote() {
-    return this.snapshotService.postVote();
+  postVote(@Body() createVoteSnapshotService: CreateVoteSnapshotService) {
+    return this.snapshotService.postVote(createVoteSnapshotService);
   }
   @Public()
   @Post('/post/delegate')
-  postDelegate() {
-    return this.snapshotService.postDelegate();
+  postDelegate(@Body() createDelegateSnapshotService: CreateDelegateSnapshotService) {
+    return this.snapshotService.postDelegate(createDelegateSnapshotService);
   }
 }

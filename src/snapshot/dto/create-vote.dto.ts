@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 
-export class CreateThreadDiscussionsService {
+export class CreateVoteSnapshotService {
   @ApiProperty()
   readonly id?: Number;
 
