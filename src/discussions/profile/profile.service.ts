@@ -14,6 +14,9 @@ import { verify } from 'crypto';
 import { Role } from 'src/auth/role-enums/role.enum';
 
 var store = new SessionNonceStore();
+// var const prisma = new PrismaClient();
+
+const prisma = new PrismaClient();
 
 @Injectable()
 export class ProfileService {
@@ -39,8 +42,9 @@ export class ProfileService {
     return await this.prisma.user.findUnique({ where: { id: id } });
   }
 
-  update(id: number, updateProfileDto: UpdateProfileDto) {
-    //update the fields returned
+ async update(id: number, updateProfileDto: UpdateProfileDto) {
+    return await prisma.user.update( { where: { id },
+      data: { ...updateProfileDto },});
     return `This action updates a #${id} profile`;
   }
 
@@ -73,7 +77,6 @@ export class ProfileService {
       });
       console.log('token verify', token);
       return token;
-    // }
   };
 
   async  login(createLoginDto: CreateLoginDto) {

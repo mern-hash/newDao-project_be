@@ -3,7 +3,7 @@ import { CreateAuthDto, CreateLoginDto } from './dto/create-auth.dto';
 import { UpdateAuthDto } from './dto/update-auth.dto';
 import { PassportStrategy } from '@nestjs/passport';
 import { Strategy } from 'passport-ethereum-siwe';
-import { PrismaClient } from '@prisma/client';
+import { Prisma, PrismaClient } from '@prisma/client';
 import { JwtService } from '@nestjs/jwt';
 import { recoverPersonalSignature } from 'eth-sig-util';
 import { bufferToHex } from 'ethereumjs-util';
@@ -12,12 +12,6 @@ import { Role } from './role-enums/role.enum';
 @Injectable()
 export class AuthService {
   constructor(private prisma: PrismaClient, private jwtService: JwtService) {
-    // const web3 = new Web3();
-    // super({
-    //   web3,
-    //   authPath: '/auth/ethereum',
-    //   callbackURL: '/auth/ethereum/callback',
-    // });
   }
   create(createAuthDto: CreateAuthDto) {
     const auth: any = {
@@ -31,27 +25,21 @@ export class AuthService {
       canvasSession: createAuthDto.canvasSession,
       canvasHash: createAuthDto.canvasHash,
     };
-    // 'This action adds a new auth';
-    return this.prisma.reply.create({ data: auth });
   }
 
  async findAll() {
-    // return `This action returns all auth`;
-    return await this.prisma.reply.findMany();
+  
   }
 
  async findOne(id: number) {
-    // return `This action returns a #${id} auth`;
-     return await this.prisma.reply.findUnique({ where: { id: id } });
+    return `This action returns a #${id} auth`;
   }
 
  async update(id: number, updateAuthDto: UpdateAuthDto) {
-    return `This action updates a #${id} auth`;
+  
   }
 
  async remove(id: number) {
-    // return `This action removes a #${id} auth`;
-     return await this.prisma.reply.delete({ where: { id } });
   }
   sigVerify = async (createLoginDto: CreateLoginDto) => {
     const { signature, address, msg, nonce }: any = createLoginDto;

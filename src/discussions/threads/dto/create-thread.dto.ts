@@ -17,7 +17,7 @@ export class CreateThreadDto {
         required: false,
         description: "thread category chosen from the available category"
     })
-    readonly viewCount?: Number
+    readonly viewCount?: number
 
 
     @ApiProperty({
@@ -30,7 +30,7 @@ export class CreateThreadDto {
         required: false,
         description: "thread tags chosen from the available tags"
     })
-    readonly authorId: Number
+    readonly authorId: number
     
     @ApiProperty({
         required: false,

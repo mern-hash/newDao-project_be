@@ -3,6 +3,12 @@ import { Public } from 'src/auth/decorators/public.decorators';
 import { Roles } from 'src/auth/decorators/roles.decorator';
 import { Role } from 'src/auth/role-enums/role.enum';
 import { DiscussionsService } from './discussions.service';
+import { CreateCategoriesDiscussionsService } from './dto/create-categories-discussions.dto';
+import { CreateCommentDiscussionsService } from './dto/create-comment-discussions.dto';
+import { CreateDiscussionsService } from './dto/create-discussions.dto';
+import { CreateTagsDiscussionsService } from './dto/create-tags-discussions.dto';
+import { CreateThreadDiscussionsService } from './dto/create-thread-discussions.dto';
+import { CreateViewDiscussionsService } from './dto/create-view-discussions.dto';
 
 
 @Controller('discussions')
@@ -10,42 +16,63 @@ export class DiscussionsController {
   constructor(private readonly discussionsService: DiscussionsService) {}
 
   @Public()
+  @Post('/categories')
+  postCategories(@Body() createCategoriesDiscussionsService: CreateCategoriesDiscussionsService) {
+    return this.discussionsService.postCategories(createCategoriesDiscussionsService);
+  }
+
+  
+  @Public()
   @Get('/categories')
   getCategories() {
     return this.discussionsService.getCategories();
   }
 
+  
   @Public()
   @Get('/threads')
   getThreads() {
     return this.discussionsService.getThreads();
   }
-  // @Public()
-  @Roles(Role.User, Role.Admin)
+  @Public()
+  // @Roles(Role.User)
   @Post('/threads')
-  postThreads() {
-    return this.discussionsService.postThreads();
+  postThreads(@Body() createThreadDiscussionsService: CreateThreadDiscussionsService) {
+    return this.discussionsService.postThreads(createThreadDiscussionsService);
+  }
+
+  @Public()
+  @Get('/thread/:id')
+  threadsfindOne(@Param('id') id: string) {
+    return this.discussionsService.threadsfindOne(+id);
   }
   @Public()
   @Get('/comments')
   getComments() {
     return this.discussionsService.getCategories();
   }
-  @Roles(Role.User)
+  @Public()
+  // @Roles(Role.User)
   @Post('/comments')
-  postComments() {
-    return this.discussionsService.postComments();
+  postComments(@Body() createCommentDiscussionsService: CreateCommentDiscussionsService) {
+    return this.discussionsService.postComments(createCommentDiscussionsService);
   }
+
+  
+
   @Public()
   @Get('/tags')
   getTags() {
     return this.discussionsService.getTags();
   }
-  @Roles(Role.Admin)
+
+  @Public()
+  // @Roles(Role.Admin)
   @Post('/tags')
-  postTags() {
-    return this.discussionsService.postTags();
+  postTags(@Body() createTagsDiscussionsService: CreateTagsDiscussionsService) {
+    return this.discussionsService.postTags(createTagsDiscussionsService);
   }
+
   @Public()
   @Get('/members')
   getMembers() {
@@ -61,16 +88,91 @@ export class DiscussionsController {
   getProfile() {
     return this.discussionsService.getProfile();
   }
+
   @Public()
   // @Roles(Role.User,Role.Admin)
   @Post('/profile')
-  postProfile() {
-    return this.discussionsService.postProfile();
+  postProfile(@Body() createDiscussionsService: CreateDiscussionsService) {
+    return this.discussionsService.postProfile(createDiscussionsService);
   }
 
-  @Roles(Role.User)
+  @Public()
+  @Get('/profile/:id')
+  profilefindOne(@Param('id') id: string) {
+    return this.discussionsService.profilefindOne(+id);
+  }
+  
+  @Public()
+  // @Roles(Role.User)
   @Post('/view')
-  postView() {
-    return this.discussionsService.postView();
+  postView(@Body() CreateViewDiscussionsService: CreateViewDiscussionsService) {
+    return this.discussionsService.postView(CreateViewDiscussionsService);
+  }
+  @Public()
+
+  @Patch('/profile/:id')
+  profileUpdate(@Param('id') id: string, @Body() CreateDiscussionsService: CreateDiscussionsService) {
+    return this.discussionsService.profileUpdate(+id, CreateDiscussionsService);
+  }
+  // @Public()
+  // // @Roles(Role.User,Role.Admin)
+  // @Patch('/profile')
+  // patchProfile() {
+  //   return this.discussionsService.patchProfile();
+  // }
+
+  @Public()
+  // @Roles(Role.User,Role.Admin)
+  @Patch('/reaction')
+  patchReaction() {
+    return this.discussionsService.patchReaction();
+  }
+  @Public()
+
+  @Patch('/thread/:id')
+  threadsUpdate(@Param('id') id: string, @Body() createThreadDiscussionsService: CreateThreadDiscussionsService) {
+    return this.discussionsService.threadsUpdate(+id, createThreadDiscussionsService);
+  }
+  
+  // @Roles(Role.User,Role.User)
+  // @Delete('/thread')
+  // deleteThread() {
+  //   return this.discussionsService.deleteThread();
+  // }
+  @Public()
+     @Delete('/thread/:id')
+   ThreadsDelete(@Param('id') id: number) {
+    return this.discussionsService.ThreadsDelete(id);
+  }
+   // @Delete(':id')
+  // remove(@Param('id') id: string) {
+  //   return this.profileService.remove(+id);
+  // }
+  @Public()
+  // @Roles(Role.User,Role.Admin)
+  @Delete('/comments')
+  deleteComments() {
+    return this.discussionsService.deleteComments();
+  }
+
+   @Public()
+  // @Roles(Role.User,Role.Admin)
+  @Delete('/tags/:id')
+  tagsDelete(@Param('id') id: number) {
+    return this.discussionsService.tagsDelete(+id);
+  }
+
+  @Public()
+  // @Roles(Role.User,Role.Admin)
+  @Delete('/categories/:id')
+  deleteCategories(@Param('id') id: number) {
+    return this.discussionsService.deleteCategories(+id);
+  }
+
+  @Public()
+  // @Roles(Role.User,Role.Admin)
+  @Delete('/suspend')
+  deleteSuspends() {
+    return this.discussionsService.deleteSuspends();
   }
 }
